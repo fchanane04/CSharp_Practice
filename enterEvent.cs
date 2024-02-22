@@ -1,19 +1,20 @@
 using System;
 
-public class Builder
+public class Builder 
 {
     public static string name;
     public static int counter = 0;
+    public static int modified = 0;
 }
 
 public class Publisher
 {
-    public delegate void EventHandler(); // this is a delegate
-    public event EventHandler Ev; // this is an event
+    public delegate void EventHandler();
+    public event EventHandler Ev;
     
     public void RaiseEvent()
     {
-        Ev?.Invoke(); //if there is a subscriber
+        Ev?.Invoke();
     }
 }
 
@@ -29,6 +30,7 @@ public class Subscriber
         {
             Console.WriteLine("Stop! You reached the limits!!\n");
             Builder.counter = 0;
+            Builder.modified += 1;
             Console.WriteLine("Free trial is Over, Another name:\n");
             Builder.name = Console.ReadLine();
         }
@@ -48,6 +50,11 @@ class Program
 
         while (true)
         {
+            if (Builder.modified > 2)
+            {
+                Console.WriteLine("reached more than 2 users, STOPPED");
+                Environment.Exit(0);
+            }
             ConsoleKeyInfo keyInfo = Console.ReadKey(true);
             if (keyInfo.Key == ConsoleKey.Enter)
             {
