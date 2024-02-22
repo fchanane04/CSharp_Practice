@@ -2,9 +2,11 @@ using System;
 
 public class Builder 
 {
+    public static string checkPassword = "ABCD";
     public static string name;
     public static int counter = 0;
     public static int modified = 0;
+    public static string password;
 }
 
 public class Publisher
@@ -45,6 +47,14 @@ class Program
         Subscriber subscriber = new Subscriber();
         Console.WriteLine("Please enter your name:\n");
         Builder.name = Console.ReadLine();
+        Console.WriteLine("Please enter the password:\n");
+        Builder.password = Console.ReadLine();
+        while (Builder.password != Builder.checkPassword)
+        {
+            // need to count attempts
+            Console.WriteLine("Not correct! Enter a valid one!\n");
+            Builder.password = Console.ReadLine();
+        }
         publisher.Ev += subscriber.OnEventRaised;
         Console.WriteLine("Press Enter to raise the event...");
 
@@ -60,6 +70,7 @@ class Program
             {
                 publisher.RaiseEvent();
             }
+            //Console.WriteLine("reached the end of while loop")
         }
     }
 }
